@@ -7,6 +7,7 @@ schema:
   version: "0.1"
   description: |
     An unofficial schema for DaNiu double pinyin
+    双拼方案原作者：吅吅大山
   dependencies:
     - stroke
   icon: "icon/Chinese.ico"
