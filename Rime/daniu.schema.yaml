@@ -1,0 +1,175 @@
+# Rime schema
+# An unofficial schema for DaNiu double pinyin
+
+schema:
+  schema_id: daniu
+  name: 大牛双拼
+  version: "0.1"
+  description: |
+    An unofficial schema for DaNiu double pinyin
+  dependencies:
+    - stroke
+  icon: "icon/Chinese.ico"
+  ascii_icon: "icon/English.ico"
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - script_translator
+  filters:
+    - simplifier
+    - uniquifier
+
+# Core: From dict to double-pinyin (so that you can use double-pinyin to type)
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  # initials: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " '"
+  algebra: &pinyin_to_double_pinyin
+    - erase/^xx$/         # Some chars wrong pinyined to xx, erase them
+    - derive/^([jqx])u$/$1v/  # u -> v when meets j q x
+    - derive/^([jqx])ue$/$1ve/  # ue -> ve when meets j q x
+    # Core Code I: Zero-Shengmu Letter Def
+    - xform/^([aoe].*)$/E$1/  # Zero shengmu using e
+    # Core Code II: Nomal trans
+    # Mind that trans to CAPITAL letters to avoid mis-trans (by two rules)
+    - xform/iu$/T/
+    - xform/ua$/Q/
+    - xform/ia$/K/
+    - xform/er$/U/
+    - xform/uan$/Z/
+    - xform/van$/J/
+    - xform/ue$/H/
+    - xform/ve$/X/
+    - xform/v$/V/
+    - xform/uai$/G/
+    - derive/^sh/_sh/
+    - xform/^_sh/U/
+    - xform/^sh/V/
+    - xform/^ch/I/
+    - derive/^zh/_zh/
+    - xform/^_zh/A/
+    - xform/^zh/O/
+    - xform/uo$/O/
+    - xform/un$/Y/
+    - xform/vn$/W/
+    - xform/iong$/L/      # iong trans before ong
+    - xform/ong$/L/
+    - xform/uang$/X/
+    - xform/iang$/N/
+    # Core Code III: Zero-Shengmu related trans
+    - xform/(.)en$/$1K/
+    - xform/(.)eng$/$1J/
+    - xform/(.)ang$/$1F/
+    - derive/ian$/_ian/   # For multi-key to one yunmu
+    - xform/_ian$/Q/
+    - xform/ian$/C/
+    - xform/(.)an$/$1D/
+    - xform/iao$/M/
+    - xform/(.)ao$/$1S/
+    - xform/(.)ai$/$1H/
+    - xform/(.)ei$/$1W/
+    - xform/ie$/P/
+    - derive/ui$/_ui/
+    - xform/_ui$/V/
+    - xform/ui$/N/
+    - xform/(.)ou$/$1R/
+    - xform/in$/B/
+    - xform/ing$/G/
+    - xlit/QWERTYUIOPASDFGHJKLZXCVBNM/qwertyuiopasdfghjklzxcvbnm/
+    # - abbrev/^(.).+$/$1/
+
+# For displaying actual pinyin you mean in pre-edit area
+translator:
+  dictionary: luna_pinyin
+  prism: daniu
+  # preedit_format:
+  #   - xform/([aoe])(\w)/0$2/
+  #   - xform/([bpmnljqxy])n/$1in/
+  #   - xform/(\w)g/$1eng/
+  #   - xform/(\w)q/$1iu/
+  #   - xform/([gkhvuirzcs])w/$1ua/
+  #   - xform/(\w)w/$1ia/
+  #   - xform/([dtnlgkhjqxyvuirzcs])r/$1uan/
+  #   - xform/0r/er/
+  #   - xform/([dtgkhvuirzcs])v/$1ui/
+  #   - xform/(\w)v/$1ve/
+  #   - xform/(\w)t/$1ve/
+  #   - xform/([gkhvuirzcs])y/$1uai/
+  #   - xform/(\w)y/$1v/
+  #   - xform/([dtnlgkhvuirzcs])o/$1uo/
+  #   - xform/(\w)p/$1un/
+  #   - xform/([jqx])s/$1iong/
+  #   - xform/(\w)s/$1ong/
+  #   - xform/([jqxnl])d/$1iang/
+  #   - xform/(\w)d/$1uang/
+  #   - xform/(\w)f/$1en/
+  #   - xform/(\w)h/$1ang/
+  #   - xform/(\w)j/$1an/
+  #   - xform/(\w)k/$1ao/
+  #   - xform/(\w)l/$1ai/
+  #   - xform/(\w)z/$1ei/
+  #   - xform/(\w)x/$1ie/
+  #   - xform/(\w)c/$1iao/
+  #   - xform/(\w)b/$1ou/
+  #   - xform/(\w)m/$1ian/
+  #   - xform/(\w);/$1ing/
+  #   - xform/0(\w)/$1/
+  #   - "xform/(^|[ '])v/$1zh/"
+  #   - "xform/(^|[ '])i/$1ch/"
+  #   - "xform/(^|[ '])u/$1sh/"
+  #   - xform/([jqxy])v/$1u/
+  #   - xform/([nl])v/$1ü/
+
+# DNF: Is there sth like reverse_lookup/algebra available?
+reverse_lookup:
+  dictionary: stroke
+  enable_completion: true
+  prefix: "`"
+  suffix: "'"
+  tips: "笔画"
+  # Displayed texts
+  preedit_format:
+    - "xlit/hspnz/一丨丿丶乙/"
+  # The result you want
+  comment_format: *pinyin_to_double_pinyin
+
+punctuator:
+  import_preset: default
+  full_shape:
+    '\': '、'
+    '/': '/'
+  half_shape:
+    '\': '、'
+    '/': '/'
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  # Not importing default (default.yaml in program folder)
+  # cause 'default/uppercase' is useless
+  # import_preset: default
+  patterns:
+    reverse_lookup: "`[a-z]*'?$"
+
+switches:
+  - name: simplification
+    reset: 1
+    states: ["繁體","简体"]

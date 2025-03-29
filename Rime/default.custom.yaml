@@ -1,0 +1,21 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.16.3
+  generator: "Rime::SwitcherSettings"
+  modified_time: "Thu Feb 13 23:54:19 2025"
+  rime_version: 1.11.2
+patch:
+  schema_list:
+    - {schema: daniu}
+    - {schema: luna_pinyin_simp}
+  ascii_composer/switch_key:
+    Shift_L: noop
+    Shift_R: commit_code
+    Control+space: noop
+  key_binder/bindings:
+    - { when: always, accept: Control+Space, toggle: noop}
+    - { when: has_menu, accept: Tab, send: Page_Down}
+    - { when: has_menu, accept: Shift+Tab, send: Page_Up}
+    - { when: has_menu, accept: Shift+Tab, send: Page_Up}
+  switcher/hotkeys:
+    - Control+Shift+grave

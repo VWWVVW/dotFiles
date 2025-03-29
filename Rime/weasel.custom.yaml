@@ -1,0 +1,47 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.16.3
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Mon Feb 17 23:26:57 2025"
+  rime_version: 1.11.2
+patch:
+  preset_color_schemes:
+    baw:
+      name: baw
+      author: Edi
+      back_color: 0x000000
+      border_color: 0x000000
+      text_color: 0xDDDDDD
+      hilited_text_color: 0xDDDDDD
+      hilited_back_color: 0x000000
+      hilited_candidate_text_color: 0x000000
+      hilited_candidate_back_color: 0xBBBBBB
+      candidate_text_color: 0xCCCCCC
+      comment_text_color: 0x666666
+    baw_rev:
+      name: baw_rev
+      author: Edi
+      back_color: 0xDDDDDD
+      border_color: 0xDDDDDD
+      text_color: 0x222222
+      hilited_text_color: 0x222222
+      hilited_back_color: 0xDDDDDD
+      hilited_candidate_text_color: 0xDDDDDD
+      hilited_candidate_back_color: 0x444444
+      candidate_text_color: 0x333333
+      comment_text_color: 0x999999
+  style:
+    inline_preedit: true
+    horizontal: true
+    # candidate_list_layout: linear # horizontal for squirrel(mac)
+    layout:
+      border: 0
+      margin_x: 0
+      margin_y: 0
+      round_corner: 6
+    color_scheme: baw
+    font_face: LXGW WenKai Mono
+    font_point: 14
+    comment_font_point: 14
+    label_font_point: 10
+    label_format: " %s"
