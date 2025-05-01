@@ -43,9 +43,10 @@ speller:
   # initials: zyxwvutsrqponmlkjihgfedcba
   delimiter: " '"
   algebra: &pinyin_to_double_pinyin
-    - erase/^xx$/         # Some chars wrong pinyined to xx, erase them
+    - erase/^xx$/             # Some chars wrong pinyined to xx, erase them
     - derive/^([jqx])u$/$1v/  # u -> v when meets j q x
     - derive/^([jqx])ue$/$1ve/  # ue -> ve when meets j q x
+    - derive/yue$/yve/        # yue is also yve now
     # Core Code I: Zero-Shengmu Letter Def
     - xform/^([aoe].*)$/E$1/  # Zero shengmu using e
     # Core Code II: Nomal trans
@@ -70,7 +71,7 @@ speller:
     - xform/uo$/O/
     - xform/un$/Y/
     - xform/vn$/W/
-    - xform/iong$/L/      # iong trans before ong
+    - xform/iong$/L/          # iong trans before ong
     - xform/ong$/L/
     - xform/uang$/X/
     - xform/iang$/N/
@@ -78,7 +79,7 @@ speller:
     - xform/(.)en$/$1K/
     - xform/(.)eng$/$1J/
     - xform/(.)ang$/$1F/
-    - derive/ian$/_ian/   # For multi-key to one yunmu
+    - derive/ian$/_ian/       # For multi-key to one yunmu
     - xform/_ian$/Q/
     - xform/ian$/C/
     - xform/(.)an$/$1D/
